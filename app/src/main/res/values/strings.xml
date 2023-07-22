@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PhotoSelector</string>
+    <string name="open_system_photo_selector">打开系统相册选择</string>
 </resources>
