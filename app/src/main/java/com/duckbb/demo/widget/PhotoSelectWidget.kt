@@ -35,6 +35,9 @@ class PhotoSelectWidget @JvmOverloads constructor(
         })
     }
 
+    /**
+     * 添加/删除图片都会走到该方法。
+     */
     private fun fillWithIcon() {
         mPhotoDataList.let {
             while (it.size > maxSize) {
@@ -61,7 +64,7 @@ class PhotoSelectWidget @JvmOverloads constructor(
         takePhotoCallback = callback
     }
 
-    fun setPhoto(uriList: MutableList<Uri>) {
+    fun addPhotoList(uriList: List<Uri>) {
         val tmpData = mPhotoDataList
         if (!tmpData.last().isAddIcon()) {
             toast("最多选择${maxSize}张照片~")
@@ -76,6 +79,21 @@ class PhotoSelectWidget @JvmOverloads constructor(
             fillWithIcon()
             adapter?.notifyDataSetChanged()
         }
+    }
+
+    fun getMaxSize(left: Boolean = false) = if (left) {
+        maxSize - getCurrentSize()
+    } else {
+        maxSize
+    }
+
+    fun getCurrentSize(): Int {
+        val tmpList = mPhotoDataList
+        if (tmpList.isEmpty()) return 0
+        if (tmpList.last().isAddIcon()) {
+            return tmpList.size - 1
+        }
+        return tmpList.size
     }
 
     class PhotoSelectAdapter(
