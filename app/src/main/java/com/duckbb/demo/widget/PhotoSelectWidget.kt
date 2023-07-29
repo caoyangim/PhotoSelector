@@ -13,12 +13,11 @@ import com.example.photoselector.utils.px
 class PhotoSelectWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : RecyclerView(context, attrs) {
-    private val maxSize = 6
+    private val maxSize = 8
     private val spanCount = 4
     private val mPhotoDataList = mutableListOf<PhotoItemWidget.PhotoSelectItem>()
 
     init {
-        mPhotoDataList.add(PhotoItemWidget.PhotoSelectItem.createIconAdd())
         layoutManager = GridLayoutManager(context, spanCount).apply {
             addItemDecoration(GridSpaceItemDecoration(spanCount, 3.px, 3.px))
         }
@@ -33,6 +32,10 @@ class PhotoSelectWidget @JvmOverloads constructor(
                 adapter.notifyItemRemoved(position)
             }
         })
+        post {
+            mPhotoDataList.add(PhotoItemWidget.PhotoSelectItem.createIconAdd())
+            adapter!!.notifyItemChanged(0)
+        }
     }
 
     /**
@@ -51,10 +54,7 @@ class PhotoSelectWidget @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        (adapter as PhotoSelectAdapter).let {
-            it.itemWidth = w / spanCount
-            it.notifyItemChanged(0)
-        }
+        (adapter as PhotoSelectAdapter).setItemWith(w / spanCount)
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
@@ -70,6 +70,9 @@ class PhotoSelectWidget @JvmOverloads constructor(
             toast("最多选择${maxSize}张照片~")
             return
         }
+        if (uriList.isEmpty()) {
+            return
+        }
         val insertIndex = tmpData.size
         uriList.map {
             PhotoItemWidget.PhotoSelectItem.createLocalPhoto(it)
@@ -77,7 +80,12 @@ class PhotoSelectWidget @JvmOverloads constructor(
             tmpData.removeLast()
             tmpData.addAll(it)
             fillWithIcon()
-            adapter?.notifyDataSetChanged()
+            val full = !tmpData.last().isAddIcon()
+            if (full) {
+                adapter!!.notifyItemRangeChanged(insertIndex - 1, uriList.size)
+            } else {
+                adapter!!.notifyItemRangeInserted(insertIndex - 1, uriList.size)
+            }
         }
     }
 
@@ -108,7 +116,7 @@ class PhotoSelectWidget @JvmOverloads constructor(
             return PhotoSelectVH(itemWidget)
         }
 
-        var itemWidth = -1
+        private var itemWidth = -1
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val widget = holder.itemView as PhotoItemWidget
             val itemData = getItem(position) ?: return
@@ -132,6 +140,12 @@ class PhotoSelectWidget @JvmOverloads constructor(
             return mData[pos]
         }
 
+        fun setItemWith(itemWidth: Int) {
+            if (this.itemWidth == itemWidth) {
+                return
+            }
+            this.itemWidth = itemWidth
+        }
 
         class PhotoSelectVH(itemView: View) : ViewHolder(itemView)
 
