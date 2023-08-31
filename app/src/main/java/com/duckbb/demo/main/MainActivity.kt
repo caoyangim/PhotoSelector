@@ -7,7 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.duckbb.demo.R
 import com.duckbb.demo.databinding.ActivityMainBinding
+import com.example.photoselector.data.local.PhotoRequest
 import com.example.photoselector.fragment.PickResultFragment
+import com.example.photoselector.ui.activity.PhotoSelectActivity
+import com.example.photoselector.utils.ActivityResultHelper
 
 class MainActivity : AppCompatActivity(), OnClickListener {
 
@@ -17,7 +20,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.widgetPhotoSelect.setTakePhotoCallback {
-            choosePhotoSys()
+            choosePhotoSys(binding.switchUseSystemSelector.isChecked)
         }
     }
 
@@ -25,14 +28,25 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show()
     }
 
-    private fun choosePhotoSys() {
-        PickResultFragment.launch(
-            supportFragmentManager,
-            binding.widgetPhotoSelect.getMaxSize(true)
-        ) { uris ->
+    private fun choosePhotoSys(system: Boolean = true) {
+        if (system) {
+            PickResultFragment.launch(
+                supportFragmentManager,
+                binding.widgetPhotoSelect.getMaxSize(true)
+            ) { uris ->
+                if (uris.isNotEmpty()) {
+                    binding.widgetPhotoSelect.addPhotoList(uris)
+                }
+            }
+            return
+        }
+        val maxSize = binding.widgetPhotoSelect.getMaxSize(true)
+        PhotoSelectActivity.launch(resultHelper, PhotoRequest(maxSize)) { uris ->
             if (uris.isNotEmpty()) {
                 binding.widgetPhotoSelect.addPhotoList(uris)
             }
         }
     }
+
+    private val resultHelper = ActivityResultHelper(this, PhotoSelectActivity.contract)
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PhotoSelector</string>
     <string name="open_system_photo_selector">打开系统相册选择</string>
+    <string name="use_system_photo_selector">是否使用系统相册</string>
 </resources>

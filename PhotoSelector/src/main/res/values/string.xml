@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_text_sure_with_number">确认（ %1$d 项）</string>
+</resources>
