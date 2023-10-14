@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'maven-publish'
 }
 
 android {
@@ -48,3 +49,29 @@ dependencies {
 
     implementation("io.coil-kt:coil:2.4.0")
 }
+
+// 上传源码的 task
+tasks.register('sourceJar', Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier = "sources"
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url 'https://jitpack.io'
+//                url 'D:\\localRepo'
+            }
+        }
+        publications {
+            maven(MavenPublication) {
+                groupId = 'com.github.caoyangim'
+                artifactId = 'photo-selector'
+                version = '1.0.0'
+                from components.release
+            }
+        }
+    }
+}
+
