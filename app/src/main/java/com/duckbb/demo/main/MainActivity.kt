@@ -7,10 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.duckbb.demo.R
 import com.duckbb.demo.databinding.ActivityMainBinding
-import com.example.photoselector.data.local.PhotoRequest
-import com.example.photoselector.fragment.PickResultFragment
-import com.example.photoselector.ui.activity.PhotoSelectActivity
-import com.example.photoselector.utils.ActivityResultHelper
+import com.cy.photoselector.data.local.PhotoRequest
+import com.cy.photoselector.fragment.PickResultFragment
+import com.cy.photoselector.ui.activity.PhotoSelectActivity
+import com.cy.photoselector.utils.ActivityResultHelper
 
 class MainActivity : AppCompatActivity(), OnClickListener {
 

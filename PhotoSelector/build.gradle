@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.photoselector'
+    namespace 'com.cy.photoselector'
     compileSdk 33
 
     defaultConfig {
@@ -68,7 +68,7 @@ afterEvaluate {
             maven(MavenPublication) {
                 groupId = 'com.github.caoyangim'
                 artifactId = 'photo-selector'
-                version = '1.0.0'
+                version = '1.1.0'
                 from components.release
             }
         }

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".main.MainActivity">
 
-    <com.duckbb.demo.widget.PhotoSelectWidget
+    <com.cy.photoselector.widget.PhotoSelectWidget
         android:id="@+id/widget_photo_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
