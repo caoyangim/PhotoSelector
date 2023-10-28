@@ -9,8 +9,10 @@
 
     <TextView
         android:id="@+id/tv_top_msg"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:text="设备信息" />
 
     <com.cy.photoselector.widget.PhotoSelectWidget
         android:id="@+id/widget_photo_select"

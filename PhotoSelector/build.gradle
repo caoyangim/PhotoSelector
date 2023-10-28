@@ -46,8 +46,6 @@ dependencies {
     def coroutines_android_version = '1.5.2'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_android_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_android_version"
-
-    implementation("io.coil-kt:coil:2.4.0")
 }
 
 // 上传源码的 task

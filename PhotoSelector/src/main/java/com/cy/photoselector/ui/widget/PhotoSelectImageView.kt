@@ -6,8 +6,8 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RadioButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import coil.load
 import com.cy.photoselector.R
+import com.cy.photoselector.image.ImageLoader
 
 class PhotoSelectImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -28,7 +28,7 @@ class PhotoSelectImageView @JvmOverloads constructor(
         }
     }
 
-    fun load(uri: Uri) = _imageView.load(uri)
+    fun load(uri: Uri) = ImageLoader.load(_imageView, uri)
 
     fun checked(checked: Boolean) {
         _radioBtn.isChecked = checked
