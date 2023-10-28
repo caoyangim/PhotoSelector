@@ -1,16 +1,17 @@
 package com.duckbb.demo.main
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.duckbb.demo.R
-import com.duckbb.demo.databinding.ActivityMainBinding
 import com.cy.photoselector.data.local.PhotoRequest
 import com.cy.photoselector.fragment.PickResultFragment
 import com.cy.photoselector.ui.activity.PhotoSelectActivity
 import com.cy.photoselector.utils.ActivityResultHelper
+import com.duckbb.demo.R
+import com.duckbb.demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), OnClickListener {
 
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.tvTopMsg.text = getString(
+            R.string.current_device_msg,
+            Build.VERSION.SDK_INT.toString(),
+            applicationInfo.targetSdkVersion.toString()
+        )
         binding.widgetPhotoSelect.setTakePhotoCallback {
             choosePhotoSys(binding.switchUseSystemSelector.isChecked)
         }

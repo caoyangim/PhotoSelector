@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -22,20 +23,40 @@ class PhotoSelectActivity : AppCompatActivity() {
     private lateinit var btnSure: Button
 
     private val permissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { hasPermission ->
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { hasPermissionList ->
+            val hasPermission = hasPermissionList.filterNot {
+                it.value
+            }.isEmpty()
             if (hasPermission) {
                 initFragment()
             } else {
-                Toast.makeText(this, "请授予读取文件权限", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, requestPermissionStr(), Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
+
+    private fun requestPermissionStr() = if (targetTiramisu()) {
+        "请授予读取照片权限"
+    } else {
+        "请授予读取文件权限"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picture_seclctor)
         initView()
-        permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permissions = mutableListOf<String>()
+        if (targetTiramisu()) {
+            // Android 13 取消READ_EXTERNAL_STORAGE权限，分为照片/视频/录音三个权限
+            permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        permissionLauncher.launch(permissions.toTypedArray())
     }
+
+    private fun targetTiramisu() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            applicationInfo.targetSdkVersion >= Build.VERSION_CODES.TIRAMISU
 
     private fun initView() {
         btnSure = findViewById<Button?>(R.id.btn_sure).also { btn ->

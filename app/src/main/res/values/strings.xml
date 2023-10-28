@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">PhotoSelector</string>
+    <string name="current_device_msg">当前设备Android系统（SDK）版本:%1$s；当前软件适配系统（targetSdk）版本:%2$s</string>
     <string name="open_system_photo_selector">打开系统相册选择</string>
     <string name="use_system_photo_selector">是否使用系统相册</string>
 </resources>
