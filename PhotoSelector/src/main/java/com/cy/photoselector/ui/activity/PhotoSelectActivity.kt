@@ -7,10 +7,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.cy.photoselector.R
 import com.cy.photoselector.data.local.PhotoRequest
@@ -18,28 +16,11 @@ import com.cy.photoselector.ui.EXTRA_PHOTO_PICK_REQUEST
 import com.cy.photoselector.ui.RESULT_PHOTO_PICK
 import com.cy.photoselector.ui.select.PhotoSelectFragment
 import com.cy.photoselector.utils.ActivityResultHelper
+import com.cy.photoselector.utils.PermissionHelper
 
 class PhotoSelectActivity : AppCompatActivity() {
+    private val permissionHelper = PermissionHelper.get(this)
     private lateinit var btnSure: Button
-
-    private val permissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { hasPermissionList ->
-            val hasPermission = hasPermissionList.filterNot {
-                it.value
-            }.isEmpty()
-            if (hasPermission) {
-                initFragment()
-            } else {
-                Toast.makeText(this, requestPermissionStr(), Toast.LENGTH_SHORT).show()
-                finish()
-            }
-        }
-
-    private fun requestPermissionStr() = if (targetTiramisu()) {
-        "请授予读取照片权限"
-    } else {
-        "请授予读取文件权限"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +33,18 @@ class PhotoSelectActivity : AppCompatActivity() {
         } else {
             permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-        permissionLauncher.launch(permissions.toTypedArray())
+        permissionHelper.launch(permissions, requestPermissionStr()) { granted ->
+            if (!granted) {
+                finish()
+            }
+            initFragment()
+        }
+    }
+
+    private fun requestPermissionStr() = if (targetTiramisu()) {
+        "请授予读取照片权限"
+    } else {
+        "请授予读取文件权限"
     }
 
     private fun targetTiramisu() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&

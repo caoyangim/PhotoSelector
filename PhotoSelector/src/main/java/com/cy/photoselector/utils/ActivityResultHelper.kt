@@ -1,12 +1,12 @@
 package com.cy.photoselector.utils
 
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 
 class ActivityResultHelper<I, O>(
-    private val context: ComponentActivity,
+    private val context: ActivityResultCaller,
     private val contract: ActivityResultContract<I, O>
 ) {
     private val launcher: ActivityResultLauncher<I> = context.registerForActivityResult(contract) {

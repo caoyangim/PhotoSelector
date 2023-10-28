@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permission_failed_title">提示</string>
+    <string name="cancel">返回</string>
+    <string name="setting">设置</string>
+</resources>

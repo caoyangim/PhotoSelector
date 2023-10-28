@@ -8,15 +8,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
-class PickResultFragment(
-    private val maxItem: Int,
-    private val resultCallback: ActivityResultCallback<List<Uri>>
-) : Fragment() {
+class PickResultFragment() : Fragment() {
+
+
+    private var maxItem = 0
+    private var resultCallback: ActivityResultCallback<List<Uri>>? = null
+
+    constructor(maxItem: Int, activityResultCallback: ActivityResultCallback<List<Uri>>) : this() {
+        this.maxItem = maxItem
+        this.resultCallback = activityResultCallback
+    }
+
     private fun setResult(uris: List<@JvmSuppressWildcards Uri>?) {
         if (uris.isNullOrEmpty()) {
             return
         }
-        resultCallback.onActivityResult(uris)
+        resultCallback?.onActivityResult(uris)
         parentFragmentManager.beginTransaction()
             .remove(this)
             .commit()
