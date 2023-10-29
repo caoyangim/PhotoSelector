@@ -42,9 +42,9 @@ class PhotoSelectActivity : AppCompatActivity() {
     }
 
     private fun requestPermissionStr() = if (targetTiramisu()) {
-        "请授予读取照片权限"
+        "请授予读取照片或视频权限，访问您设备上的照片、视频内容"
     } else {
-        "请授予读取文件权限"
+        "请授予存储权限，访问您设备上的照片、媒体内容和文件"
     }
 
     private fun targetTiramisu() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&

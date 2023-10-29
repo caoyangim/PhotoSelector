@@ -6,10 +6,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.cy.photoselector.data.local.PhotoRequest
-import com.cy.photoselector.fragment.PickResultFragment
-import com.cy.photoselector.ui.activity.PhotoSelectActivity
-import com.cy.photoselector.utils.ActivityResultHelper
+import com.cy.photoselector.basic.PhotoSelector
 import com.duckbb.demo.R
 import com.duckbb.demo.databinding.ActivityMainBinding
 
@@ -35,24 +32,12 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun choosePhotoSys(system: Boolean = true) {
-        if (system) {
-            PickResultFragment.launch(
-                supportFragmentManager,
-                binding.widgetPhotoSelect.getMaxSize(true)
-            ) { uris ->
-                if (uris.isNotEmpty()) {
-                    binding.widgetPhotoSelect.addPhotoList(uris)
-                }
+        val maxItem = binding.widgetPhotoSelect.getMaxSize(true)
+        PhotoSelector.with(this)
+            .useSystemAlbum(system)
+            .setMaxSelectItem(maxItem)
+            .take { uriList ->
+                binding.widgetPhotoSelect.addPhotoList(uriList)
             }
-            return
-        }
-        val maxSize = binding.widgetPhotoSelect.getMaxSize(true)
-        PhotoSelectActivity.launch(resultHelper, PhotoRequest(maxSize)) { uris ->
-            if (uris.isNotEmpty()) {
-                binding.widgetPhotoSelect.addPhotoList(uris)
-            }
-        }
     }
-
-    private val resultHelper = ActivityResultHelper(this, PhotoSelectActivity.contract)
 }
