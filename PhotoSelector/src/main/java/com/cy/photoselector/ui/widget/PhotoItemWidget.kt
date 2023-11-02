@@ -1,4 +1,4 @@
-package com.cy.photoselector.widget
+package com.cy.photoselector.ui.widget
 
 import android.content.Context
 import android.net.Uri
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.cy.photoselector.R
 import com.cy.photoselector.image.ImageLoader
-import com.cy.photoselector.widget.PhotoItemWidget.PhotoSelectItem.Companion.TYPE_ICON_ADD
+import com.cy.photoselector.ui.widget.PhotoItemWidget.PhotoSelectItem.Companion.TYPE_ICON_ADD
 
 class PhotoItemWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         PhotoSelector.with(this)
             .useSystemAlbum(system)
             .setMaxSelectItem(maxItem)
+            .takePhoto(binding.switchTakePhoto.isChecked)
             .take { uriList ->
                 binding.widgetPhotoSelect.addPhotoList(uriList)
             }

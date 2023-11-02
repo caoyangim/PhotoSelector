@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import com.cy.photoselector.R
@@ -15,10 +14,10 @@ import com.cy.photoselector.data.local.PhotoRequest
 import com.cy.photoselector.ui.EXTRA_PHOTO_PICK_REQUEST
 import com.cy.photoselector.ui.RESULT_PHOTO_PICK
 import com.cy.photoselector.ui.select.PhotoSelectFragment
-import com.cy.photoselector.utils.ActivityResultHelper
 import com.cy.photoselector.utils.PermissionHelper
 
 class PhotoSelectActivity : AppCompatActivity() {
+    private lateinit var request: PhotoRequest
     private val permissionHelper = PermissionHelper.get(this)
     private lateinit var btnSure: Button
 
@@ -69,6 +68,7 @@ class PhotoSelectActivity : AppCompatActivity() {
         if (fragment == null) {
             fragment = PhotoSelectFragment()
         }
+        request = intent.extras?.getParcelable(EXTRA_PHOTO_PICK_REQUEST) ?: return
         fragment.arguments = intent.extras
         (fragment as PhotoSelectFragment).setOnItemSelected {
             photoList.apply {
@@ -77,6 +77,7 @@ class PhotoSelectActivity : AppCompatActivity() {
             }
             btnSure.text = getString(R.string.btn_text_sure_with_number, it.size)
         }
+
         supportFragmentManager.beginTransaction().let { beginTransaction ->
             if (fragment.isAdded) {
                 beginTransaction.show(fragment)
@@ -91,13 +92,6 @@ class PhotoSelectActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun launch(
-            launcher: ActivityResultHelper<PhotoRequest, List<Uri>>,
-            request: PhotoRequest,
-            callback: ActivityResultCallback<List<Uri>>
-        ) {
-            launcher.launch(request, callback)
-        }
 
         val contract = object : ActivityResultContract<PhotoRequest, List<Uri>>() {
             override fun createIntent(context: Context, input: PhotoRequest): Intent {

@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 
+private const val TAG = "MediaRepositoryImpl"
+
 class MediaRepositoryImpl(private val context: Context) : MediaRepository {
 
     /**
@@ -34,7 +36,7 @@ class MediaRepositoryImpl(private val context: Context) : MediaRepository {
     }
 
     override suspend fun getMediaList(): Result<List<MediaItem>> {
-        Log.e("getMediaList", "currentTHread: ${Thread.currentThread()}")
+        Log.d(TAG, "currentThread: ${Thread.currentThread()}")
         val cursor = context.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PROJECTION, null, null,
             MediaStore.Images.Media.DATE_ADDED + " desc"

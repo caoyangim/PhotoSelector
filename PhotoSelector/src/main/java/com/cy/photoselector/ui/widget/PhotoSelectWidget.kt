@@ -1,4 +1,4 @@
-package com.cy.photoselector.widget
+package com.cy.photoselector.ui.widget
 
 import android.content.Context
 import android.net.Uri

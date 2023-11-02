@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         tools:text="设备信息" />
 
-    <com.cy.photoselector.widget.PhotoSelectWidget
+    <com.cy.photoselector.ui.widget.PhotoSelectWidget
         android:id="@+id/widget_photo_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +29,14 @@
         android:paddingHorizontal="16dp"
         android:layout_marginTop="10dp"
         android:text="@string/use_system_photo_selector" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/take_photo" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
