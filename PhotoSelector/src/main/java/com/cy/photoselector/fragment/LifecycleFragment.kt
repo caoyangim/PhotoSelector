@@ -5,11 +5,10 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import com.cy.photoselector.R
+import com.cy.photoselector.basic.PhotoSelectorConfig.getEnterAnimationOption
 import com.cy.photoselector.data.local.PhotoRequest
 import com.cy.photoselector.ui.activity.PhotoSelectActivity
 import com.cy.photoselector.utils.ActivityResultHelper
@@ -67,11 +66,7 @@ internal class LifecycleFragment : Fragment() {
         val resultHelper = ActivityResultHelper(this, PhotoSelectActivity.contract)
         resultHelper.launch(
             request!!,
-            ActivityOptionsCompat.makeCustomAnimation(
-                requireContext(),
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
+            getEnterAnimationOption(requireContext())
         ) {
             setResult(it)
         }

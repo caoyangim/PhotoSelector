@@ -10,11 +10,13 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import com.cy.photoselector.R
+import com.cy.photoselector.basic.PhotoSelectorConfig
 import com.cy.photoselector.data.local.PhotoRequest
 import com.cy.photoselector.ui.EXTRA_PHOTO_PICK_REQUEST
 import com.cy.photoselector.ui.RESULT_PHOTO_PICK
 import com.cy.photoselector.ui.select.PhotoSelectFragment
 import com.cy.photoselector.utils.PermissionHelper
+import com.google.android.material.appbar.MaterialToolbar
 
 class PhotoSelectActivity : AppCompatActivity() {
     private lateinit var request: PhotoRequest
@@ -59,6 +61,14 @@ class PhotoSelectActivity : AppCompatActivity() {
                 finish()
             }
         }
+        findViewById<MaterialToolbar>(R.id.tool_bar).apply {
+            setNavigationOnClickListener { finishAfterTransition() }
+        }
+    }
+
+    override fun finish() {
+        super.finish()
+        PhotoSelectorConfig.overridePendingTransition(this)
     }
 
     private val photoList: ArrayList<Uri> = arrayListOf()
