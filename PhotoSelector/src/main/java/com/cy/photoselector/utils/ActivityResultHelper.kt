@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.core.app.ActivityOptionsCompat
 
 /**
  * 作用：缓存{@link #callback}，从而可以在页面跳转方法{@link #launch(I input,
@@ -24,7 +25,11 @@ class ActivityResultHelper<I, O>(
     private var _resultCallback: ActivityResultCallback<O>? = null
 
     fun launch(input: I, callback: ActivityResultCallback<O>) {
+        launch(input, null, callback)
+    }
+
+    fun launch(input: I, options: ActivityOptionsCompat?, callback: ActivityResultCallback<O>) {
         _resultCallback = callback
-        launcher.launch(input)
+        launcher.launch(input, options)
     }
 }
