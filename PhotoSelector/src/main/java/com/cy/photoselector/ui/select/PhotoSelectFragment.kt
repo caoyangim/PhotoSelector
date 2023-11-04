@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -16,8 +17,10 @@ import com.cy.photoselector.R
 import com.cy.photoselector.data.local.PhotoRequest
 import com.cy.photoselector.repository.MediaRepositoryImpl
 import com.cy.photoselector.ui.EXTRA_PHOTO_PICK_REQUEST
+import com.cy.photoselector.ui.widget.GridSpaceItemDecoration
+import com.cy.photoselector.utils.ActivityResultHelper
+import com.cy.photoselector.utils.ImageFileUtil
 import com.cy.photoselector.utils.px
-import com.cy.photoselector.widget.GridSpaceItemDecoration
 import kotlinx.coroutines.launch
 
 class PhotoSelectFragment : Fragment() {
@@ -48,7 +51,12 @@ class PhotoSelectFragment : Fragment() {
                     rvMediaList.also {
                         it.visibility = View.VISIBLE
                         it.adapter =
-                            MediaAdapter(uiState.mediaItems.toMutableList(), request, mCallback)
+                            MediaAdapter(
+                                uiState.mediaItems.toMutableList(),
+                                request,
+                                mCallback,
+                                onCameraClick
+                            )
                         if (it.itemDecorationCount <= 0) {
                             it.addItemDecoration(GridSpaceItemDecoration(3, 3.px, 3.px))
                         }
@@ -56,6 +64,7 @@ class PhotoSelectFragment : Fragment() {
                 }
             }
         }
+
     }
 
     private var mCallback: ((List<Uri>) -> Unit)? = null
@@ -64,7 +73,17 @@ class PhotoSelectFragment : Fragment() {
         mCallback = callback
     }
 
-    public
+    private val takePictureLauncher =
+        ActivityResultHelper(this, ActivityResultContracts.TakePicture())
+    private val onCameraClick: (() -> Unit) = {
+        val uri = ImageFileUtil.createImageFile(requireContext())
+        takePictureLauncher.launch(uri) { success ->
+            if (success) {
+                viewModel.addPhoto(uri)
+            }
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

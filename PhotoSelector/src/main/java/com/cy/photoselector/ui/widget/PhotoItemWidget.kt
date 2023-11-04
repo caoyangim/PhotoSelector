@@ -1,4 +1,4 @@
-package com.cy.photoselector.widget
+package com.cy.photoselector.ui.widget
 
 import android.content.Context
 import android.net.Uri
@@ -7,8 +7,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.cy.photoselector.R
-import com.cy.photoselector.image.load
-import com.cy.photoselector.widget.PhotoItemWidget.PhotoSelectItem.Companion.TYPE_ICON_ADD
+import com.cy.photoselector.image.ImageLoader
+import com.cy.photoselector.ui.widget.PhotoItemWidget.PhotoSelectItem.Companion.TYPE_ICON_ADD
 
 class PhotoItemWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -31,12 +31,12 @@ class PhotoItemWidget @JvmOverloads constructor(
     fun setData(data: PhotoSelectItem) {
         this.photoItemData = data
         if (data.type == TYPE_ICON_ADD) {
-            ivFullImage.load(R.drawable.ic_add_image)
+            ImageLoader.load(ivFullImage, R.drawable.ic_add_image)
             ivDel.visibility = View.GONE
             return
         }
         data.uri?.let {
-            ivFullImage.load(it)
+            ImageLoader.load(ivFullImage, it)
             ivDel.visibility = View.VISIBLE
         }
     }

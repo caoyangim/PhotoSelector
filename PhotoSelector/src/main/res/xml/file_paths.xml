@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--
+    <files-path>：表示在应用内部存储空间中 files/ 子目录，这个目录路径跟 Context.getFilesDir() 返回的一致。
+    <cache-path>：表示在应用内部存储空间中 cache/ 子目录，这个目录路径跟 Context.getCacheDir() 返回的一致。
+    <external-path>：表示在应用外部存储空间中的根目录，这个目录路径跟 Environment.getExternalStorageDirectory() 返回的一致。
+    <external-files-path>：表示在应用外部存储空间中 files/ 子目录，这个目录路径跟 Context.getExternalFilesDir(String)、Context.getExternalFilesDir(null) 返回的一致。
+    <external-cache-path>：表示在应用外部存储空间中 cache/ 子目录，这个目录路径跟 Context.getExternalCacheDir() 返回的一致。
+    <external-media-path>：表示在应用外部存储空间中媒体子目录，这个目录路径跟 Context.getExternalMediaDirs() 返回的一致（注意：这个目录只在 API 21+ 的设备上有效）
+    -->
+    <!--content://com.xxx/photo_selector_cache/xx-->
+    <external-path
+        name="photo_selector_cache"
+        path="." />
+    <external-files-path
+        name="photo_selector_files"
+        path="." />
+</paths>
+    

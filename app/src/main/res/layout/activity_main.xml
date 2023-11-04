@@ -7,7 +7,14 @@
     android:orientation="vertical"
     tools:context=".main.MainActivity">
 
-    <com.cy.photoselector.widget.PhotoSelectWidget
+    <TextView
+        android:id="@+id/tv_top_msg"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="设备信息" />
+
+    <com.cy.photoselector.ui.widget.PhotoSelectWidget
         android:id="@+id/widget_photo_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +29,52 @@
         android:paddingHorizontal="16dp"
         android:layout_marginTop="10dp"
         android:text="@string/use_system_photo_selector" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/take_photo" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="转场动画：" />
+
+        <RadioButton
+            android:id="@+id/rb_default_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:onClick="onRadioButtonClicked"
+            android:text="默认动画" />
+
+        <RadioButton
+            android:id="@+id/rb_slide_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:onClick="onRadioButtonClicked"
+            android:text="侧滑动画" />
+
+        <RadioButton
+            android:id="@+id/rb_up_down_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:onClick="onRadioButtonClicked"
+            android:text="弹出动画" />
+    </RadioGroup>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
