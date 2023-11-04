@@ -5,32 +5,28 @@
 a simple photo selector demo
 
 ``` gradle
-dependencies {
-       implementation 'com.github.caoyangim:PhotoSelector:Tag'
-}
+    implementation 'com.github.caoyangim:PhotoSelector:Tag'
 ```
 
 ## use
 
 ``` kotlin
-   private val resultHelper = ActivityResultHelper(requireActivity(), PhotoSelectActivity.contract)
-   private fun choosePhotoSys(system: Boolean = true) {
-        if (system) {
-            PickResultFragment.launch(
-                supportFragmentManager,
-                maxSize
-            ) { uris ->
-                // showUris
-            }
-            return
-        }
-        PhotoSelectActivity.launch(resultHelper, PhotoRequest(maxSize)) { uris ->
-            // showUris
-        }
-    }
+  // 配置（必选）
+  PhotoSelectorConfig.setImageLoader { imageView, uri ->
+       // Glide Coil ...
+       imageView.load(uri)
+  }
+  // 使用
+   hotoSelector.with(this)
+           .useSystemAlbum(system)
+           .setMaxSelectItem(maxItem)
+           .takePhoto(binding.switchTakePhoto.isChecked)
+           .take { uriList ->
+               // todo
+           }
 ```
 
 ## TODO
 
-1. ~~移除不必要的依赖，轻量化控件；~~
+1. 选中回显
 2. 图片预览
