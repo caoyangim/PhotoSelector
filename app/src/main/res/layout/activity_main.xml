@@ -38,6 +38,14 @@
         android:layout_marginTop="10dp"
         android:text="@string/take_photo" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_take_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/take_video" />
+
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

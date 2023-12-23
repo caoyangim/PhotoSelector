@@ -17,7 +17,7 @@ a simple photo selector demo
        imageView.load(uri)
   }
   // 使用
-  PhotoSelector.with(this)
+PhotoSelector.with(this)
            .useSystemAlbum(system)
            .setMaxSelectItem(maxItem)
            .takePhoto(binding.switchTakePhoto.isChecked)

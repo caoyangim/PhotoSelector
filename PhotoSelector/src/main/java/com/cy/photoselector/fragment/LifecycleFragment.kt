@@ -39,14 +39,17 @@ internal class LifecycleFragment : Fragment() {
             return
         }
         if (request!!.useSystemAlbum) {
-            launchWithSystem(request!!.maxSelectItem)
+            launchWithSystem(request!!.maxSelectItem, request!!.takeVideo)
             return
         }
         launcher()
     }
 
-    private fun launchWithSystem(maxItem: Int) {
-        val request = PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+    private fun launchWithSystem(maxItem: Int, takeVideo: Boolean) {
+        val request = PickVisualMediaRequest(
+            if (takeVideo) ActivityResultContracts.PickVisualMedia.ImageAndVideo else
+                ActivityResultContracts.PickVisualMedia.ImageOnly
+        )
         if (maxItem <= 0) {
             return
         }

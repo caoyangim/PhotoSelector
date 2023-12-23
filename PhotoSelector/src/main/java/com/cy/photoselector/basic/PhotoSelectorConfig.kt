@@ -2,16 +2,15 @@ package com.cy.photoselector.basic
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
-import android.widget.ImageView
 import androidx.annotation.AnimRes
 import androidx.core.app.ActivityOptionsCompat
 import com.cy.photoselector.R
 import com.cy.photoselector.image.ImageLoader
+import com.cy.photoselector.image.ImageLoaderHelper
 
 object PhotoSelectorConfig {
-    fun setImageLoader(loader: (ImageView, Uri) -> Unit) {
-        ImageLoader.setImageLoader(loader);
+    fun setImageLoader(loader: ImageLoader) {
+        ImageLoaderHelper.setImageLoader(loader);
     }
 
     @AnimRes

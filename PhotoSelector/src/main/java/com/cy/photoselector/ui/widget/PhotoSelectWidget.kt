@@ -21,17 +21,21 @@ class PhotoSelectWidget @JvmOverloads constructor(
         layoutManager = GridLayoutManager(context, spanCount).apply {
             addItemDecoration(GridSpaceItemDecoration(spanCount, 3.px, 3.px))
         }
-        adapter = PhotoSelectAdapter(context, mPhotoDataList, object : PhotoSelectAdapter.Callback {
-            override fun takePhoto() {
-                takePhotoCallback?.invoke()
-            }
+        adapter = PhotoSelectAdapter(
+            context,
+            spanCount,
+            mPhotoDataList,
+            object : PhotoSelectAdapter.Callback {
+                override fun takePhoto() {
+                    takePhotoCallback?.invoke()
+                }
 
-            override fun closeItem(adapter: PhotoSelectAdapter, position: Int) {
-                mPhotoDataList.removeAt(position)
-                fillWithIcon()
-                adapter.notifyItemRemoved(position)
-            }
-        })
+                override fun closeItem(adapter: PhotoSelectAdapter, position: Int) {
+                    mPhotoDataList.removeAt(position)
+                    fillWithIcon()
+                    adapter.notifyItemRemoved(position)
+                }
+            })
         post {
             mPhotoDataList.add(PhotoItemWidget.PhotoSelectItem.createIconAdd())
             adapter!!.notifyItemChanged(0)
@@ -106,13 +110,17 @@ class PhotoSelectWidget @JvmOverloads constructor(
 
     class PhotoSelectAdapter(
         private val context: Context,
+        private val spanCount: Int,
         private val mData: MutableList<PhotoItemWidget.PhotoSelectItem>,
         private val callback: Callback
     ) :
         Adapter<ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemWidget = PhotoItemWidget(context)
+            val itemWidget = PhotoItemWidget(context).apply {
+                val size = parent.width / spanCount
+                layoutParams = LayoutParams(size, size)
+            }
             return PhotoSelectVH(itemWidget)
         }
 

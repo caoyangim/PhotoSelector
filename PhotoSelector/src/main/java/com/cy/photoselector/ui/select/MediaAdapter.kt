@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.cy.photoselector.R
@@ -14,9 +15,10 @@ import com.cy.photoselector.utils.px
 import com.cy.photoselector.utils.toast
 
 class MediaAdapter constructor(
+    private val spaceCount: Int = 3,
     private val mediaList: MutableList<MediaItemVM> = mutableListOf(),
     private val photoRequest: PhotoRequest,
-    private val onItemSelected: ((List<Uri>) -> Unit)?,
+    private val onItemSelected: ((List<MediaAdapter.MediaItemVM>) -> Unit)?,
     private val onCameraClicked: (() -> Unit)? = null
 ) : RecyclerView.Adapter<MediaAdapter.MediaVH>() {
 
@@ -28,7 +30,7 @@ class MediaAdapter constructor(
 
     inner class MediaVH(itemView: View, private val viewType: Int) :
         RecyclerView.ViewHolder(itemView) {
-        fun bind(mediaItem: MediaItemVM) {
+        fun bind(mediaItem: MediaItemVM, pos: Int) {
             if (viewType == TYPE_CAMERA) {
                 val ivCamera = itemView as ImageView
                 ivCamera.setImageResource(R.drawable.ic_media_type_camera)
@@ -40,7 +42,7 @@ class MediaAdapter constructor(
                 return
             }
             val iv = itemView as PhotoSelectImageView
-            iv.load(mediaItem.item.uri)
+            iv.load(mediaItem.item)
             iv.checked(mediaItem.selected)
             iv.setOnCheckedChangeListener { preSelected ->
                 if (!preSelected && mediaList.count { it.selected } >= photoRequest.maxSelectItem) {
@@ -50,10 +52,8 @@ class MediaAdapter constructor(
                 mediaItem.selected = !preSelected
                 onItemSelected?.invoke(mediaList.filter { media ->
                     media.selected
-                }.map { media ->
-                    media.item.uri
                 })
-                notifyItemChanged(position)
+                notifyItemChanged(pos)
             }
         }
 
@@ -63,13 +63,17 @@ class MediaAdapter constructor(
         if (viewType == TYPE_CAMERA) {
             return MediaVH(ImageView(parent.context), viewType)
         } else {
-            return MediaVH(PhotoSelectImageView(parent.context), viewType)
+            return MediaVH(PhotoSelectImageView(parent.context, spaceCount).apply {
+                val parentVg = parent
+                val size = parentVg.width / spaceCount
+                layoutParams = ConstraintLayout.LayoutParams(size, size)
+            }, viewType)
         }
     }
 
     override fun onBindViewHolder(holder: MediaVH, position: Int) {
         val mediaItem = getItemOrNull(position) ?: return
-        holder.bind(mediaItem)
+        holder.bind(mediaItem, position)
     }
 
     private fun getItemOrNull(position: Int): MediaItemVM? {
@@ -84,7 +88,7 @@ class MediaAdapter constructor(
     companion object {
         private const val TYPE_CAMERA = 1
         private const val TYPE_MEDIA = 2
-        private val MEDIA_CAMERA = MediaItemVM(true, MediaItem(Uri.EMPTY))
+        private val MEDIA_CAMERA = MediaItemVM(true, MediaItem(uri = Uri.EMPTY))
     }
 
     data class MediaItemVM(

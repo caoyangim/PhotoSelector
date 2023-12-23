@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         PhotoSelector.with(this)
             .useSystemAlbum(system)
             .setMaxSelectItem(maxItem)
+            .takeVideo(binding.switchTakeVideo.isChecked)
             .takePhoto(binding.switchTakePhoto.isChecked)
             .take { uriList ->
                 binding.widgetPhotoSelect.addPhotoList(uriList)

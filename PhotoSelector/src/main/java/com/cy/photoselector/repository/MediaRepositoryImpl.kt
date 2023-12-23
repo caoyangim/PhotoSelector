@@ -27,18 +27,21 @@ class MediaRepositoryImpl(private val context: Context) : MediaRepository {
         MediaStore.MediaColumns.SIZE,
         MediaStore.MediaColumns.DISPLAY_NAME,
         MediaStore.MediaColumns.DATE_ADDED,
+        MediaStore.MediaColumns.DURATION,
     )
 
-    override fun getMediaListStream(): Flow<Result<List<MediaItem>>> = flow {
+    override fun getMediaListStream(video: Boolean): Flow<Result<List<MediaItem>>> = flow {
         emit(runBlocking {
-            getMediaList()
+            getMediaList(video)
         })
     }
 
-    override suspend fun getMediaList(): Result<List<MediaItem>> {
+    override suspend fun getMediaList(video: Boolean): Result<List<MediaItem>> {
         Log.d(TAG, "currentThread: ${Thread.currentThread()}")
+        val contentUri = if (video) MediaStore.Files.getContentUri("external")
+        else MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val cursor = context.contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PROJECTION, null, null,
+            contentUri, PROJECTION, null, null,
             MediaStore.Images.Media.DATE_ADDED + " desc"
         )
         if (cursor == null || cursor.count == 0) {
@@ -62,12 +65,14 @@ class MediaRepositoryImpl(private val context: Context) : MediaRepository {
             val date = cursor.getString(
                 cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
             )
+            val duration =
+                cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DURATION))
             val uri = if (isQ()) {
                 getRealPathUri(id, mediaType)
             } else {
                 Uri.parse(filePath)
             }
-            mediaItems.add(MediaItem(uri))
+            mediaItems.add(MediaItem(id, uri, mediaType, duration))
         }
         cursor.close()
         return Result.success(mediaItems)
