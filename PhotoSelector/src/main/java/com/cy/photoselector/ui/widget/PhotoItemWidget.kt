@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.cy.photoselector.R
-import com.cy.photoselector.image.ImageLoader
+import com.cy.photoselector.image.ImageLoaderHelper
 import com.cy.photoselector.ui.widget.PhotoItemWidget.PhotoSelectItem.Companion.TYPE_ICON_ADD
 
 class PhotoItemWidget @JvmOverloads constructor(
@@ -31,12 +31,17 @@ class PhotoItemWidget @JvmOverloads constructor(
     fun setData(data: PhotoSelectItem) {
         this.photoItemData = data
         if (data.type == TYPE_ICON_ADD) {
-            ImageLoader.load(ivFullImage, R.drawable.ic_add_image)
+            ImageLoaderHelper.load(ivFullImage, R.drawable.ic_add_image)
             ivDel.visibility = View.GONE
             return
         }
         data.uri?.let {
-            ImageLoader.load(ivFullImage, it)
+            val isVideo = it.toString().contains("video")
+            if (isVideo) {
+                ImageLoaderHelper.loadVideoPath(ivFullImage, it.toString())
+            } else {
+                ImageLoaderHelper.load(ivFullImage, it)
+            }
             ivDel.visibility = View.VISIBLE
         }
     }

@@ -19,4 +19,16 @@
         android:clickable="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_video_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="6dp"
+        android:paddingHorizontal="5dp"
+        android:textSize="12sp"
+        android:background="#EE666666"
+        tools:text="@tools:sample/lorem"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </merge>

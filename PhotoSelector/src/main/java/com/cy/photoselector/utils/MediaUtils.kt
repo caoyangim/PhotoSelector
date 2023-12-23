@@ -19,10 +19,10 @@ object MediaUtils {
         return ContentUris.withAppendedId(contentUri, id)
     }
 
-    private fun isImage(mimeType: String) = mimeType.startsWith("image")
+    fun isImage(mimeType: String) = mimeType.startsWith("image")
 
-    private fun isVideo(mimeType: String) = mimeType.startsWith("video")
+    fun isVideo(mimeType: String) = mimeType.startsWith("video")
 
-    private fun isAudio(mimeType: String) = mimeType.startsWith("audio")
+    fun isAudio(mimeType: String) = mimeType.startsWith("audio")
 
 }

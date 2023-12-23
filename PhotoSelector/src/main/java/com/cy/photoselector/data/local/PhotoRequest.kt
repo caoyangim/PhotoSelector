@@ -15,6 +15,7 @@ data class PhotoRequest(
     val onlyOneSelect: Boolean = false,
     val useSystemAlbum: Boolean = false,
     val takePhoto: Boolean = true,
+    val takeVideo:Boolean = false,
     val savePhoto2Album: Boolean = false,
 ) : Parcelable {
 
@@ -30,6 +31,7 @@ data class PhotoRequest(
         private var onlyOneSelect = false
         private var useSystemAlbum = false
         private var takePhoto = true
+        private var takeVideo =false
         private var savePhoto2Album = false
         private var callback: ((List<Uri>) -> Unit)? = null
 
@@ -53,6 +55,11 @@ data class PhotoRequest(
             return this
         }
 
+        fun takeVideo(take: Boolean = true):PhotoRequestBuilder {
+            takeVideo = take
+            return this
+        }
+
         fun onlyOneSelect(): PhotoRequestBuilder {
             onlyOneSelect = true
             return this
@@ -71,6 +78,7 @@ data class PhotoRequest(
                 onlyOneSelect,
                 useSystemAlbum,
                 takePhoto,
+                takeVideo,
                 savePhoto2Album
             )
             if (activity != null) {

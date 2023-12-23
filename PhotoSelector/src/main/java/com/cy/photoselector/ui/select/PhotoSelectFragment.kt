@@ -29,7 +29,7 @@ class PhotoSelectFragment : Fragment() {
     private lateinit var rvMediaList: RecyclerView
     private lateinit var viewModel: PhotoSelectViewModel
     private lateinit var request: PhotoRequest
-
+    private val spaceCount = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repo = MediaRepositoryImpl(requireContext())
@@ -37,7 +37,7 @@ class PhotoSelectFragment : Fragment() {
             ?: throw IllegalArgumentException("没有找到参数PhotoRequest")
         viewModel = ViewModelProvider(
             this,
-            PhotoSelectViewModel.FACTORY(repo)
+            PhotoSelectViewModel.FACTORY(repo, request)
         )[PhotoSelectViewModel::class.java]
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -52,13 +52,16 @@ class PhotoSelectFragment : Fragment() {
                         it.visibility = View.VISIBLE
                         it.adapter =
                             MediaAdapter(
+                                spaceCount,
                                 uiState.mediaItems.toMutableList(),
                                 request,
-                                mCallback,
+                                { itemList ->
+                                    mCallback?.invoke(itemList.map { item -> item.item.uri })
+                                },
                                 onCameraClick
                             )
                         if (it.itemDecorationCount <= 0) {
-                            it.addItemDecoration(GridSpaceItemDecoration(3, 3.px, 3.px))
+                            it.addItemDecoration(GridSpaceItemDecoration(spaceCount, 3.px, 3.px))
                         }
                     }
                 }

@@ -4,9 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cy.photoselector.data.local.MediaItem
+import com.cy.photoselector.data.local.PhotoRequest
 import com.cy.photoselector.repository.MediaRepository
 import com.cy.photoselector.utils.Async
-import com.cy.photoselector.utils.singleArgViewModelFactory
+import com.cy.photoselector.utils.doubleArgViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,17 +25,18 @@ data class PictureSelectUiState(
 )
 
 class PhotoSelectViewModel(
-    private val repository: MediaRepository
+    private val repository: MediaRepository,
+    private val request: PhotoRequest
 ) : ViewModel() {
 
     companion object {
-        val FACTORY = singleArgViewModelFactory(::PhotoSelectViewModel)
+        val FACTORY = doubleArgViewModelFactory(::PhotoSelectViewModel)
         const val TAG = "PictureSelectUiState"
     }
 
     private val _isLoading = MutableStateFlow(false)
     private val _queryMediaAsync: Flow<Async<List<MediaAdapter.MediaItemVM>>> =
-        repository.getMediaListStream()
+        repository.getMediaListStream(request.takeVideo)
             .map { result ->
                 result.getOrThrow().map {
                     MediaAdapter.MediaItemVM(item = it)
@@ -70,7 +72,7 @@ class PhotoSelectViewModel(
         )
 
     fun addPhoto(uri: Uri) {
-        val item = MediaAdapter.MediaItemVM(false, MediaItem(uri), false)
+        val item = MediaAdapter.MediaItemVM(false, MediaItem(uri = uri), false)
         val oldList = _mediaFromTake.value
         val result = ArrayList<MediaAdapter.MediaItemVM>(oldList.size + 1)
         result.add(item)
