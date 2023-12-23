@@ -57,7 +57,7 @@ class MediaRepositoryImpl(private val context: Context) : MediaRepository {
             )
             val mediaType = cursor.getString(
                 cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE)
-            )
+            ) ?: ""
             val fileName = cursor.getString(
                 cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
             )
